@@ -20,7 +20,7 @@ spec:
         - containerPort: 5000
         env:
         - name: MONGODB_URI
-          value: "REPLACE_WITH_YOUR_MONGODB_ATLAS_CONNECTION_STRING"
+          value: "mongodb://admin:password123@mongodb-service:27017/raisbook?authSource=admin"
 ---
 apiVersion: v1
 kind: Service
