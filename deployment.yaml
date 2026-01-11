@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: myapp-backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: myapp
+      app: myapp-backend
   template:
     metadata:
       labels:
-        app: myapp
+        app: myapp-backend
     spec:
       containers:
-      - name: myapp
-        image: myacr1971.azurecr.io/myapp:v1
+      - name: myapp-backend
+        image: myacr1971.azurecr.io/myapp-backend:v1
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -27,9 +27,42 @@ kind: Service
 metadata:
   name: myapp-service
 spec:
+  type: ClusterIP
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: myapp-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp-frontend
+  template:
+    metadata:
+      labels:
+        app: myapp-frontend
+    spec:
+      containers:
+      - name: myapp-frontend
+        image: myacr1971.azurecr.io/myapp-frontend:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-frontend-service
+spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 5000
+    targetPort: 80
   selector:
-    app: myapp
+    app: myapp-frontend
