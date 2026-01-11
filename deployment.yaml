@@ -17,7 +17,10 @@ spec:
         image: myacr1971.azurecr.io/myapp:v1
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000
+        - containerPort: 5000
+        env:
+        - name: MONGODB_URI
+          value: "REPLACE_WITH_YOUR_MONGODB_ATLAS_CONNECTION_STRING"
 ---
 apiVersion: v1
 kind: Service
@@ -27,6 +30,6 @@ spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 3000
+    targetPort: 5000
   selector:
     app: myapp

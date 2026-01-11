@@ -1,8 +1,15 @@
-# syntax=docker/dockerfile:1
+FROM node:16-alpine
 
-FROM node:18-alpine
 WORKDIR /app
-COPY . .
-RUN yarn install --production
-CMD ["node", "src/index.js"]
-EXPOSE 3000
+
+# Copy package files from the backend directory
+COPY media-app/backend/package*.json ./
+
+RUN npm install
+
+# Copy all backend files
+COPY media-app/backend/ .
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
